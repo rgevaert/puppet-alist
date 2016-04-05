@@ -1,0 +1,264 @@
+
+# This file is managed with Puppet
+
+#
+# This is the configuration file for the data gathering script
+# 
+# Whitespace is ignored.
+# Options are specified as TAG=VALUE.
+# Everything from '#' to the end of the line is considered a comment.
+#
+
+#
+# Try to contact listener daemon on this port
+#
+PORT=6802
+SERVER=<%= @alist_server %>
+#
+# Any records added here will be included in the final report
+# Format is:
+#  category:field:value:1/0  (1=protected, 0= not protected)
+#rec=General:Author:alist by Paul Farrall (pfarrall@brains2bytes.com):1
+#rec=General:Sysadmin:Paul Farrall:1
+
+#
+# If you set DEFAULT_DOMAIN, it will be used if the domain name
+# can't be determined at runtime. 
+DEFAULT_DOMAIN=<%= @domain %>
+
+#
+# If you set FORCE_DOMAIN, it will override any domain name
+# that is determined at run time on the machine. This setting 
+# overrides the DEFAULT_DOMAIN.
+FORCE_DOMAIN=<%= @domain %>
+
+
+# You can run your own external programs.  With the following
+# requirements:
+#
+# 1. Alist client/ dir and client/scripts/ will be in the $PATH by
+# default. Programs in other locations should use full path or use the
+# script_dir directive (see below).
+#
+# 2. Stdout and Stderr will be scanned for lines with format
+# CATEGORY:FIELD:Field Value:Flag(0|1) Lines that meet this
+# requirement will be split into 4 categories and added to data.  Any
+# other lines will be discarded.  NOTE: It is your programs
+# responsibility to escape ':' characters that may exist in the four
+# fields with preceding '\' character.
+#
+# 3. BE CAREFUL!  These external programs will be run with the same
+# priveleges as the user running alist.  If you're going to run alist
+# as root, make sure the alist.cf file and path are not writable by
+# some random user.  Ditto for any programs/scripts that you specify.
+#
+# The script_dir directive adds directories to the $PATH searched when
+# you specify a command without a full path.  You can have multiple
+# script_dir directives; they will all be added the the $PATH.
+#
+#script_dir=/home/paul/alist-scripts
+script_dir=/etc/alist/scripts
+#
+# Script examples
+#
+# Run script /usr/bin/myscript.sh and capture output
+#prog=/usr/bin/myscript.sh
+#
+# Run script myprog with args -a arg1
+#prog="myprog -a arg1"
+#
+# Run script with args -a "a b c"
+#prog=myprog -a "a b c"
+#
+# Include contents of /etc/hosts in output (the script
+# include-text-file.pl is included with the alist distribution)
+prog=alist-dmidecode
+prog=ugentinfo
+prog=hypervisor
+prog=xendomains.pl
+prog=get_serial
+prog=zones.pl
+prog=list_pci_solaris
+prog=get_hba_wwns
+prog=sap_instances
+prog=oracle_instances
+prog=gpfs_info
+
+
+################################################################################
+###               Locations for Utility Commands.                            ###
+################################################################################
+# This section contains paths to commands on the various platforms. 
+# The defaults should work for most people.  Edit if you need to.
+#
+# Note:  If you specify more than one path for a command, the program
+# will search all the paths you provided for that command.
+# e.g.
+#     LINUX_PS = /bin/ps
+#     LINUX_PS = /opt/bin/ps
+#
+# In this case Alist would try to use /bin/ps then /opt/bin/ps if
+# /bin/ps doesn't work.  The order you list commands is the order they
+# will be tried.  
+#
+###############################################################################
+# OS X Commands 
+###############################################################################
+
+DARWIN_CAT      = /bin/cat
+DARWIN_DF       = /bin/df
+DARWIN_EGREP    = /usr/bin/egrep
+DARWIN_GREP     = /usr/bin/grep
+DARWIN_HOSTNAME = /bin/hostname
+DARWIN_IFCONFIG = /sbin/ifconfig
+DARWIN_NETSTAT  = /usr/sbin/netstat
+DARWIN_NIDOMAIN = /usr/sbin/nidomain
+DARWIN_NIDUMP   = /usr/bin/nidump
+DARWIN_NVRAM    = /usr/sbin/nvram
+DARWIN_PDISK    = /usr/sbin/pdisk
+DARWIN_PS       = /bin/ps
+DARWIN_PSTAT    = /usr/sbin/pstat
+DARWIN_RPCINFO  = /usr/sbin/rpcinfo
+DARWIN_SYSCTL   = /usr/sbin/sysctl
+DARWIN_UNAME    = /usr/bin/uname
+
+
+###############################################################################
+# FreeBSD Commands 
+###############################################################################
+
+FREEBSD_CAT       =  /bin/cat
+FREEBSD_DF        =  /bin/df
+FREEBSD_GREP      =  /usr/bin/grep
+FREEBSD_HOSTNAME  =  /bin/hostname
+FREEBSD_IFCONFIG  =  /sbin/ifconfig
+FREEBSD_NETSTAT   =  /usr/bin/netstat
+FREEBSD_PS        =  /bin/ps
+FREEBSD_PSTAT     =  /usr/sbin/pstat
+FREEBSD_ROUTE     =  /sbin/route
+FREEBSD_RPCINFO   =  /usr/bin/rpcinfo
+FREEBSD_SYSCTL    =  /sbin/sysctl
+FREEBSD_UNAME     =  /usr/bin/uname
+
+###############################################################################
+# OpenBSD Commands 
+###############################################################################
+
+OPENBSD_CAT       =  /bin/cat
+OPENBSD_DF        =  /bin/df
+OPENBSD_GREP      =  /usr/bin/grep
+OPENBSD_HOSTNAME  =  /bin/hostname
+OPENBSD_IFCONFIG  =  /sbin/ifconfig
+OPENBSD_NETSTAT   =  /usr/bin/netstat
+OPENBSD_PS        =  /bin/ps
+OPENBSD_PSTAT     =  /usr/sbin/pstat
+OPENBSD_ROUTE     =  /sbin/route
+OPENBSD_RPCINFO   =  /usr/bin/rpcinfo
+OPENBSD_SYSCTL    =  /sbin/sysctl
+OPENBSD_UNAME     =  /usr/bin/uname
+
+###############################################################################
+# HPUX Commands 
+###############################################################################
+
+HPUX_CAT      = /usr/bin/cat
+HPUX_DF       = /usr/bin/df
+HPUX_DMESG    = /usr/sbin/dmesg
+HPUX_GETMEM   = /usr/sam/lbin/getmem
+HPUX_GREP     = /usr/bin/grep
+#HPUX_HOSTID   = hostid
+HPUX_HOSTNAME = /usr/bin/hostname
+HPUX_IFCONFIG = /usr/sbin/ifconfig
+HPUX_IOSCAN   = /usr/sbin/ioscan
+HPUX_LANSCAN  = /usr/sbin/lanscan
+HPUX_MODEL    = /usr/bin/model
+HPUX_NETSTAT  = /usr/bin/netstat
+HPUX_PS       = /usr/bin/ps
+HPUX_RPCINFO  = /usr/bin/rpcinfo
+HPUX_SWAPINFO = /usr/sbin/swapinfo
+HPUX_SWLIST   = /usr/sbin/swlist
+HPUX_UNAME    = /usr/bin/uname
+
+###############################################################################
+# Irix Commands 
+###############################################################################
+
+IRIX_CAT      = cat
+IRIX_DF       = /usr/sbin/df
+IRIX_EGREP    = egrep
+IRIX_GREP     = grep
+IRIX_HINV     = /sbin/hinv
+IRIX_HOSTID   = /usr/bsd/hostid
+IRIX_HOSTNAME = /usr/bsd/hostname
+IRIX_IFCONFIG = /usr/etc/ifconfig
+IRIX_LS       = /bin/ls
+IRIX_NETSTAT  = /usr/etc/netstat
+IRIX_PS       = /bin/ps
+IRIX_RPCINFO  = /usr/etc/rpcinfo
+IRIX_SWAP     = /sbin/swap
+IRIX_SYSINFO  = /sbin/sysinfo
+IRIX_UNAME    = /bin/uname
+IRIX_UNAME    = /usr/bin/uname
+IRIX_VERSIONS = /usr/sbin/versions
+
+###############################################################################
+# Linux Commands 
+###############################################################################
+
+LINUX_CAT      = /bin/cat
+LINUX_DF       = /bin/df
+LINUX_EGREP    = /bin/egrep
+LINUX_FDISK    = /sbin/fdisk
+LINUX_GREP     = /bin/grep
+LINUX_HOSTID   = /usr/bin/hostid
+LINUX_HOSTNAME = /bin/hostname
+LINUX_HWCLOCK  = /sbin/hwclock
+LINUX_IFCONIG  = /sbin/ifconfig
+LINUX_LOCALE   = /usr/bin/locale
+LINUX_LSPCI    = /sbin/lspci
+LINUX_LYNX     = /usr/bin/lynx
+LINUX_NETSTAT  = /bin/netstat
+LINUX_PGREP    = /usr/bin/pgrep
+LINUX_PS       = /bin/ps
+LINUX_ROUTE    = /sbin/route
+LINUX_RPCINFO  = /usr/bin/rpcinfo
+LINUX_RPCINFO  = /usr/sbin/rpcinfo
+LINUX_RPM      = /bin/rpm
+LINUX_UNAME    = /bin/uname
+
+###############################################################################
+# Solaris Commands 
+###############################################################################
+
+#SOLARIS_PRTDIAG   = /usr/platform/$arch/sbin/prtdiag
+SOLARIS_ARCH       = /bin/arch
+SOLARIS_CAT        = /bin/cat
+SOLARIS_DF         = /bin/df
+SOLARIS_DOMAINNAME = /bin/domainname
+SOLARIS_ECHO       = /usr/bin/echo
+SOLARIS_EEPROM     = /usr/sbin/eeprom
+SOLARIS_EGREP      = /bin/egrep
+SOLARIS_FBCONFIG   = /usr/sbin/fbconfig
+SOLARIS_FFBCONFIG  = /usr/sbin/ffbconfig
+SOLARIS_FORMAT     = /usr/sbin/format
+SOLARIS_GREP       = /bin/grep
+SOLARIS_HOSTID     = /bin/hostid
+SOLARIS_HOSTNAME   = /bin/hostname
+SOLARIS_IFCONFIG   = /sbin/ifconfig
+SOLARIS_LPSTAT     = /bin/lpstat
+SOLARIS_MODINFO    = /usr/sbin/modinfo
+SOLARIS_NETSTAT    = /bin/netstat
+SOLARIS_PKGINFO    = /bin/pkginfo
+SOLARIS_PRTCONF    = /usr/sbin/prtconf
+SOLARIS_PS         = /bin/ps
+SOLARIS_PSRINFO    = /usr/sbin/psrinfo
+SOLARIS_RPCINFO    = /bin/rpcinfo
+SOLARIS_SHOWREV    = /bin/showrev
+SOLARIS_SWAP       = /usr/sbin/swap
+SOLARIS_UNAME      = /bin/uname
+
+###############################################################################
+# MS Windows Commands 
+###############################################################################
+# MSWIN32_HOSTID = hostid
+# MSWIN32_HOSTNAME = hostname

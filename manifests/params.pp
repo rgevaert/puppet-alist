@@ -4,14 +4,14 @@
 # It sets variables according to platform.
 #
 class alist::params {
+
+  $alist_server  = "alist.${::domain}"
+  $deny_clients  = ''
+  $allow_clients = [ $::network_eth0 ]
+  $start_server  = 'true'
+
   case $::osfamily {
-    'Debian': {
-      $package_name = 'alist'
-      $service_name = 'alist'
-    }
-    'RedHat', 'Amazon': {
-      $package_name = 'alist'
-      $service_name = 'alist'
+    'Debian', 'Redhat': {
     }
     default: {
       fail("${::operatingsystem} not supported")

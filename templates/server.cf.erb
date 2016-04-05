@@ -1,0 +1,112 @@
+
+# This file is managed with Puppet
+
+# This is the confuration file for the alistd daemon and the alist.cgi
+# program.  Some options in this file apply to both programs and some
+# apply to only one.  It should be clear which option applies to each
+# program, but they are divided into sections, so there is not
+# confusion.
+#
+# If you are running the alisd daemon on a different machine than the
+# alist.cgi program, you can copy this file to multiple locations.  
+# Just remember to synchronize any changes.
+
+######################################################################
+# Options for alistd and alist.cgi
+######################################################################
+#
+#
+# DATA_DIR is the directory where the alistd daemon will
+# deposit the data files for each machine and it is also
+# where alist.cgi will look for data files.
+#
+DATA_DIR=/var/lib/alist
+
+
+######################################################################
+# Options for alistd only
+######################################################################
+#
+PORT=6802                             # Port that server listens on
+SERVER=<%= fqdn %>            # Name of host server runs on
+LOGFILE=/var/log/alist.log            # logfile for daemon msgs.
+
+#
+# SECURE_MODE -- If this option is set to 0, then clients will not be
+# checked against the access list.  The command line option -u set's
+# SECURE_MODE == 0.  If set to a value > 0, clients IP address will be
+# checked against the access list before allowing to connect.
+#
+SECURE_MODE=1
+
+#
+# Deny/Allow hosts.  Deny list is checked first by server, then allow
+# list.  Client checking is stopped upon the first match.  You can have
+# multiple entries for each. One per line.  clients may be specified as
+# an IP address, partial IP address, hostname or domain name.
+#
+# The DENY_CLIENT option adds the client IP to the deny list.
+# These clients are not allowed to connect to the alistd daemon.
+#
+#DENY_CLIENT=12.255.23.5               # Deny client with this IP
+#DENY_CLIENT=12.255.23                 # Deny clients on 12.255.23 network
+#DENY_CLIENT=rocket.brains2bytes.com   # Deny this host
+#DENY_CLIENT=brains2bytes.com          # Deny all hosts from brains2bytes.com
+
+<%if deny_clients.is_a? Array -%>
+<% deny_clients.each do |name| -%><%= "DENY_CLIENT=#{name}\n" %><% end -%>
+<% elsif deny_clients != '' -%>
+<%= "DENY_CLIENT=#{deny_clients}" -%>
+<% end -%>
+
+# The ALLOW_CLIENT option adds the client IP to the access list.  
+# These clients are allowed to connect to the alistd daemon.
+#
+#ALLOW_CLIENT=12.255.23.5               # Allow client with this IP
+#ALLOW_CLIENT=12.255.23                 # Allow clients on 12.255.23 network
+#ALLOW_CLIENT=rocket.brains2bytes.com   # Allow this host
+#ALLOW_CLIENT=brains2bytes.com          # Allow all hosts from brains2bytes.com
+ALLOW_CLIENT=127.0.0.1
+<%if allow_clients.is_a? Array -%>
+<% allow_clients.each do |name| -%><%= "ALLOW_CLIENT=#{name}\n" %><% end -%>
+<% elsif allow_clients != '' -%>
+<%= "ALLOW_CLIENT=#{allow_clients}" -%>
+<% end -%>
+
+######################################################################
+# Options for alist.cgi only
+######################################################################
+#
+# alist.cgi caches some information in CACHE_FILE to to speed up 
+# display of the search form.  Unique categories, fields, and domains 
+# that currently exist in the database are stored in this file. Make 
+# sure that the cache file is writable by the user who owns the 
+# process running the cgi.
+#
+CACHE_FILE=/tmp/alist.cache
+
+#
+# html header.  All Text between HTML_HEAD_START and HTML_HEAD_END
+# Will be printed by the cgi before any other output.
+#
+HTML_HEAD_START
+<head>
+<title> Alist System Inventory Page </title>
+</head>
+<body>
+<h1 align=center> System Inventory Page </h1>
+
+HTML_HEAD_END
+
+
+#
+# html footer.  All Text between HTML_FOOT_START and HTML_FOOT_END
+# will be printed by the cgi after all other output.
+#
+HTML_FOOT_START
+<hr>
+<address> alist (by Paul Farrall pfarrall@brains2bytes.com) </address>
+<hr>
+</html>
+
+HTML_FOOT_END
