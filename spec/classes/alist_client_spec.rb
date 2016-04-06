@@ -30,17 +30,16 @@ describe 'alist::client', :type => :class do
             'owner'   => 'root',
             'group'   => 'root',
             'mode'    => '0644',
+            'require' => 'Package[alist-client]',
           )}
-          it { is_expected.to contain_file('/etc/alist/client.cf').that_requires('Package[alist-client]') }
           it { is_expected.to contain_file('/etc/default/alist-client').with(
-            'ensure' => 'present',
-            'owner'  => 'root',
-            'group'  => 'root',
-            'mode'   => '0644',
+            'ensure'  => 'present',
+            'owner'   => 'root',
+            'group'   => 'root',
+            'mode'    => '0644',
+            'content' => $default_client_cf,
+            'require' => 'Package[alist-client]',
           )}
-          it { is_expected.to contain_file('/etc/default/alist-client').with_content($default_client_cf)
-          }
-          it { is_expected.to contain_file('/etc/default/alist-client').that_requires('Package[alist-client]') }
 
           context "without any parameters" do
             let(:facts) do

@@ -23,6 +23,7 @@ exclude_paths = [
   "pkg/**/*",
   "vendor/**/*",
   "spec/**/*",
+  "spec/fixtures/modules/**/*",
 ]
 
 # Coverage from puppetlabs-spec-helper requires rcov which
