@@ -13,7 +13,11 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.       
+This module can be used to install an alist client or server.
+
+Alist is an inventory software that has been end of life before we started using it.
+
+This module exists primarily as an exercise to learn TDD with Puppet.
 
 ## Module Description
 
