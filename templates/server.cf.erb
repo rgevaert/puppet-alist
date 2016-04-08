@@ -56,7 +56,7 @@ SECURE_MODE=1
 <%if @deny_clients.is_a? Array -%>
 <% @deny_clients.each do |name| -%><%= "DENY_CLIENT=#{name}\n" %><% end -%>
 <% elsif @deny_clients != '' -%>
-<%= "DENY_CLIENT=#{deny_clients}" -%>
+<%= "DENY_CLIENT=#{@deny_clients}" -%>
 <% end -%>
 
 # The ALLOW_CLIENT option adds the client IP to the access list.  

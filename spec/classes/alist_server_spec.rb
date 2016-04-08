@@ -76,7 +76,7 @@ describe 'alist::server', :type => :class do
             it { is_expected.to contain_service('alist-server').with_ensure('stopped') }
           end
 
-          context "with parameter deny_clients set to array" do
+          context "with parameter deny_clients set to array of values" do
             let(:params) {{
               :deny_clients => [ '10.10.10.10', '11.11.11.11'],
             }}
@@ -84,7 +84,7 @@ describe 'alist::server', :type => :class do
             it { is_expected.to contain_file('/etc/alist/server.cf').with_content(/^DENY_CLIENT=11.11.11.11$/) }
           end
 
-          context "with parameter deny_clients set to array" do
+          context "with parameter deny_clients set to one value" do
             let(:params) {{
               :deny_clients => '10.10.10.10',
             }}
