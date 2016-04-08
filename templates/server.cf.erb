@@ -28,7 +28,7 @@ DATA_DIR=/var/lib/alist
 ######################################################################
 #
 PORT=6802                             # Port that server listens on
-SERVER=<%= fqdn %>            # Name of host server runs on
+SERVER=<%= @fqdn %>            # Name of host server runs on
 LOGFILE=/var/log/alist.log            # logfile for daemon msgs.
 
 #
@@ -53,9 +53,9 @@ SECURE_MODE=1
 #DENY_CLIENT=rocket.brains2bytes.com   # Deny this host
 #DENY_CLIENT=brains2bytes.com          # Deny all hosts from brains2bytes.com
 
-<%if deny_clients.is_a? Array -%>
-<% deny_clients.each do |name| -%><%= "DENY_CLIENT=#{name}\n" %><% end -%>
-<% elsif deny_clients != '' -%>
+<%if @deny_clients.is_a? Array -%>
+<% @deny_clients.each do |name| -%><%= "DENY_CLIENT=#{name}\n" %><% end -%>
+<% elsif @deny_clients != '' -%>
 <%= "DENY_CLIENT=#{deny_clients}" -%>
 <% end -%>
 
@@ -67,9 +67,9 @@ SECURE_MODE=1
 #ALLOW_CLIENT=rocket.brains2bytes.com   # Allow this host
 #ALLOW_CLIENT=brains2bytes.com          # Allow all hosts from brains2bytes.com
 ALLOW_CLIENT=127.0.0.1
-<%if allow_clients.is_a? Array -%>
-<% allow_clients.each do |name| -%><%= "ALLOW_CLIENT=#{name}\n" %><% end -%>
-<% elsif allow_clients != '' -%>
+<%if @allow_clients.is_a? Array -%>
+<% @allow_clients.each do |name| -%><%= "ALLOW_CLIENT=#{name}\n" %><% end -%>
+<% elsif @allow_clients != '' -%>
 <%= "ALLOW_CLIENT=#{allow_clients}" -%>
 <% end -%>
 
