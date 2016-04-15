@@ -13,13 +13,21 @@ describe 'alist class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
-    describe package('alist') do
-      it { is_expected.to be_installed }
+    describe package('alist-client') do
+      it { is_expected.not_to be_installed }
+    end
+
+    describe package('alist-web') do
+      it { is_expected.not_to be_installed }
+    end
+
+    describe package('alist-server') do
+      it { is_expected.not_to be_installed }
     end
 
     describe service('alist') do
-      it { is_expected.to be_enabled }
-      it { is_expected.to be_running }
+      it { is_expected.not_to be_enabled }
+      it { is_expected.not_to be_running }
     end
   end
 end
