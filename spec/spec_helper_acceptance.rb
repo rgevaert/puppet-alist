@@ -17,6 +17,15 @@ RSpec.configure do |c|
     puppet_module_install(:source => proj_root, :module_name => 'alist')
     hosts.each do |host|
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+
+      if fact_on(host, 'osfamily') == 'Debian'
+	lsb_dcn = fact_on(host, 'lsbdistcodename')
+        on host, "echo deb http://debs.ugent.be/debian #{lsb_dcn} main >  /etc/apt/sources.list.d/debs.list"
+        on host, "apt-get update"
+      elsif fact_on(host, 'osfamily') == 'RedHat'
+        # fixme
+      end
+
     end
   end
 end
