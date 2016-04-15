@@ -18,10 +18,18 @@ RSpec.configure do |c|
     hosts.each do |host|
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
 
+      lsb_dcn = fact_on(host, 'lsbdistcodename')
+      commands_Debian = <<EOF
+if [ ! -e /etc/apt/sources.list.d/debs.list ]
+then
+  echo deb http://debs.ugent.be/debian #{lsb_dcn} main >  /etc/apt/sources.list.d/debs.list
+  apt-get update
+  apt-get install --allow-unauthenticated ugent-keyring
+  apt-get update
+fi
+EOF
       if fact_on(host, 'osfamily') == 'Debian'
-	lsb_dcn = fact_on(host, 'lsbdistcodename')
-        on host, "echo deb http://debs.ugent.be/debian #{lsb_dcn} main >  /etc/apt/sources.list.d/debs.list"
-        on host, "apt-get update"
+        on host, commands_Debian
       elsif fact_on(host, 'osfamily') == 'RedHat'
         # fixme
       end
