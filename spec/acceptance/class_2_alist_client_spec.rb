@@ -1,11 +1,11 @@
 require 'spec_helper_acceptance'
 
-describe 'alist class' do
+describe 'alist::client class' do
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
-      class { 'alist': }
+      class { 'alist::client': }
       EOS
 
       # Run it twice and test for idempotency
@@ -13,11 +13,19 @@ describe 'alist class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
-    describe package('alist-web') do
-      it { is_expected.not_to be_installed }
+    describe package('alist-client') do
+      it { is_expected.to be_installed }
     end
 
-    describe package('alist-client') do
+    server_line = "SERVER=alist." + fact('domain')
+    config = '/etc/alist/client.cf'
+
+    describe file("#{config}") do
+    it { should be_file }
+      its(:content) { should match server_line }
+    end
+
+    describe package('alist-web') do
       it { is_expected.not_to be_installed }
     end
 
