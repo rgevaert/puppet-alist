@@ -25,9 +25,8 @@ describe 'alist class' do
       it { is_expected.not_to be_installed }
     end
 
-    describe service('alist') do
+    describe service('alist-server') do
       it { is_expected.not_to be_enabled }
-      it { is_expected.not_to be_running }
     end
   end
 end

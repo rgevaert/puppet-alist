@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'alist::client class' do
+describe 'alist::client class', :node => 'alist_client' do
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
