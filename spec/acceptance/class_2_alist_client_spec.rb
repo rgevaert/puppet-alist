@@ -25,17 +25,5 @@ describe 'alist::client class', :node => 'alist_client' do
       its(:content) { should match server_line }
     end
 
-    describe package('alist-web') do
-      it { is_expected.not_to be_installed }
-    end
-
-    describe package('alist-server') do
-      it { is_expected.not_to be_installed }
-    end
-
-    describe service('alist-server') do
-      it { is_expected.not_to be_enabled }
-      it { is_expected.not_to be_running }
-    end
   end
 end

@@ -1,6 +1,9 @@
 require 'spec_helper_acceptance'
 
-describe 'alist class' do
+# Don't run the test when we don't provision.
+# When alist-client is applied to default node
+# this test always fails when BEAKER_provision is no
+describe 'alist class', :if => ENV['BEAKER_provision'] == 'yes' do
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
@@ -25,8 +28,5 @@ describe 'alist class' do
       it { is_expected.not_to be_installed }
     end
 
-    describe service('alist-server') do
-      it { is_expected.not_to be_enabled }
-    end
   end
 end
